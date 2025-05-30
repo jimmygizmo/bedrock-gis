@@ -1,8 +1,8 @@
-# Bedrock GIS
+# Bedrock 🌐 GIS
 
 ## The Bedrock Stack with Magma - (GIS Enabled)
 
-### ----==== The Ultimate Python Full Stack ====----
+### ----==== The Ultimate Geospatial Python Full Stack ====----
 
 #### *The core of Bedrock is "Magma", a premium Python FastAPI microservices module*
 
