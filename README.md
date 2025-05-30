@@ -8,25 +8,29 @@
 
 ---------------------------------------------------------------------------
 
-### ✅ GIS support in the DB and in GIS Magma modules for geospatial apps
+#### ✅ GIS support in the DB and in GIS Magma modules for geospatial apps
 
-### ✅ Fastest FastAPI Possible (the only fully asynchronous Python stack)
+#### ✅ Fastest FastAPI Possible (the only fully asynchronous Python stack)
 
-### ✅ Best-practice Python design patterns featuring Dependency Injection
+#### ✅ Best-practice Python design patterns featuring Dependency Injection
 
-### ✅ Clean FastAPI architecture: models, schemas, routers, services, core
+#### ✅ Clean FastAPI architecture: models, schemas, routers, services, core
 
-### ✅ Automatic API docs & tools via both OpenAPI (aka Swagger) and Redocly
+#### ✅ GeoAlchemy2 GIS ORM libraries included
 
-### ✅ The best-engineered stack available for both web applications & microservices
+#### ✅ Latest PostgreSQL 17.5 RDBMS with PostGIS Extensions
 
-### ✅ Latest PostgreSQL 17.2 RDBMS with pgAdmin 8.14 IDE (Pro DB Admin GUI)
+#### ✅ pgAdmin 8.14 Professional Database Adminstration IDE (pre-configured)
 
-### ✅ Pydantic data validation - full coverage, with matching PyTest unit tests
+#### ✅ The best-engineered stack available for building geospatial applications
 
-### ✅ Secret separation: clean, secure. Convenient for developers, safe for the repo
+#### ✅ Automatic API docs & tools via both OpenAPI (aka Swagger) and Redocly
 
-### ✅ MIT License. Only requires attribution. Only prohibits re-distribution.
+#### ✅ Pydantic data validation - full coverage, with matching PyTest unit tests
+
+#### ✅ Secret separation: clean, secure. Convenient for developers, safe for the repo
+
+#### ✅ MIT License. Only requires attribution. Only prohibits re-distribution.
 
 ---------------------------------------------------------------------------
 
@@ -36,27 +40,27 @@ The following powerful modules and features are all completely or mostly mature 
 ready for release. Most or all will be added to Bedrock revisions here in early June 2025. Everything is under
 the same MIT License. This is all totally free Open Source.
 
-### 🔥 Authentication and Single Sign On (SSO) with JWT, OAuth 2 and more
+#### 🔥 Authentication and Single Sign On (SSO) with JWT, OAuth 2 and more
 
-### 🔥 Application building-block API endpoints with roles-base authorization
+#### 🔥 Application building-block API endpoints with roles-base authorization
 
-### 🔥 NGINX 1.23 Reverse Proxy and Accelerator Cache (fastest static content delivery)
+#### 🔥 NGINX 1.23 Reverse Proxy and Accelerator Cache (fastest static content delivery)
 
-### 🔥 NGINX SSL/Security configuration: Highest-possible rating of A++
+#### 🔥 NGINX SSL/Security configuration: Highest-possible rating of A++
 
-### 🔥 Redis cache, message queue and NoSQL store for acceleration, async processing
+#### 🔥 Redis cache, message queue and NoSQL store for acceleration, async processing
 
-### 🔥 Alembic for DB Migrations and high-quality mock-data seeding; developer friendly
+#### 🔥 Alembic for DB Migrations and high-quality mock-data seeding; developer friendly
 
-### 🔥 Premium React front end: TypeScript, React Router, Redux, Material UI
+#### 🔥 Premium React front end: TypeScript, React Router, Redux, Material UI
 
-### 🔥 Integration with Serverless PAAS like RunPod GPUs for AI/ML workloads
+#### 🔥 Integration with Serverless PAAS like RunPod GPUs for AI/ML workloads
 
-### 🔥 AWS automation for Bedrock: Create, configure VMs. Deploy Bedrock easily
+#### 🔥 AWS automation for Bedrock: Create, configure VMs. Deploy Bedrock easily
 
-### 🔥 Bedrock speaks REST by default but WebSocket and GraphQL modules are coming
+#### 🔥 Bedrock speaks REST by default but WebSocket and GraphQL modules are coming
 
-### 🔥 All free. All expertly crafted and integrated by a 20-year professional developer
+#### 🔥 All free. All expertly crafted and integrated by a 20-year professional developer
 
 ---------------------------------------------------------------------------
 
@@ -67,7 +71,7 @@ the same MIT License. This is all totally free Open Source.
 You are now in the 'project root'. Most commands and actions, if not otherwise specified, should be done from this
 directory. The project root is the directory with docker-compose.yml in it.
 
-    git clone git@github.com:jimmygizmo/bedrock.git
+    git clone git@github.com:jimmygizmo/bedrock-gis.git
 
     cd bedrock
 
@@ -84,7 +88,7 @@ is when you will most likely need those permissions. (I'll cover DB wiping durin
 
 ---------------------------------------------------------------------------
 
-## Start The Bedrock Stack
+## Start The Bedrock-GIS Stack
 
 On the first startup, Magma (the FastAPI Microservices Python app) will create all the database objects
 including the logical database itself, if necessary. The stack should work immediately. If not, simply restart it.
@@ -124,16 +128,16 @@ Bedrock always uses ports in the 40-thousand ranges when mapping outside the Com
 This section will soon get a lot of detailed and valuable information for Bedrock developers.
 
 I use Pyenv for my virtual environments and this project containers a .python-version file specifying a virtual
-environment from Pyenv with the name 've.bedrock' so I recommend you use all that and will provide good
+environment from Pyenv with the name 've.gis' so I recommend you use all that and will provide good
 instructions soon.
 
-When you create ve.bedrock with Pyenv you want to use Python version 3.10.9 to match the Python image Bedrock uses
+When you create ve.gis with Pyenv you want to use Python version 3.10.9 to match the Python image Bedrock uses
 in the running container. (see bedrock/Dockerfile). You will want to use the requirements-pinned.txt file so that
 all of your module versions in your local development environemt matches those in your deployed app.
 
     > pyenv install 3.10.9
 
-    > pyenv virtualenv 3.10.9 ve.bedrock
+    > pyenv virtualenv 3.10.9 ve.gis
 
     For the best Python installs/upgrades, always upgrade pip and setuptools in a fresh virtual environment.
 

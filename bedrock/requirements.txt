@@ -8,6 +8,7 @@ asyncpg
 python-dotenv
 asyncio
 sqlalchemy
+geoalchemy2
 
 requests
 pydantic
