@@ -11,7 +11,7 @@ from magma.core.database import async_engine, Base
 # ########  ENTRYPOINT: Bedrock Platform - FastAPI Application:  magma  ########
 
 
-log.info("🔥🔥🔥  BEDROCK MAGMA STARTING  🔥🔥🔥")
+log.info("🔥🔥🔥  BEDROCK MAGMA STARTING  ( 🌐 GIS Enabled 🌐 )  🔥🔥🔥")
 
 app = None  # Ensures global scope visibility for guvicorn
 
@@ -50,7 +50,7 @@ app.include_router(users.router)  # Users
 
 @app.get("/")
 async def root():
-    return {"message": "This is the root/default app in Bedrock Magma"}
+    return {"message": "This is the root/default app in Bedrock Magma (GIS Enabled)"}
 
 
 # ########  EVENT HANDLERS  ########
