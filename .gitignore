@@ -1,12 +1,10 @@
-# .gitignore generally for: Flask, React, Next.js, IntelliJ IDEs, MacOS, Docker, more
+# .gitignore generally for: FastAPI, Flask, React, Next.js, IntelliJ IDEs, MacOS, Docker, more
 #
-# SmartMetal.ai
+# Bedrock-GIS
 #
 
-# TODO: Clarify: Not sure why I just gota /build/ dir under /smartmetal/  = /smartmetal/build/
-# But .gitignore did not cover it. I'm really not clear what made it appear now. It's been a few builds
-# since I merged the two react apps and refactored the builds but I recently pruned docker because of
-# a missing install goof related to new /aidb/three/world, but not sure whappened.
+# The build dir seems to appear from local pip installs like the "pip install ." to install Magma.
+# An egg info dir is also created but that is already covered in this .gitignore.
 build/
 
 # In many of the following, we keep the about file there and ignore all else. (The same is done for .gitkeep files.)

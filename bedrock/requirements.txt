@@ -19,3 +19,6 @@ pytest
 # passlib, for using bcrypt for password hashing
 passlib
 
+# TODO: pydantic almost certainly come in with fastapi[all]. Do we need requests or asyncio here?
+#  Are we using requests? and asyncio probably comes in with fastapi[all].
+

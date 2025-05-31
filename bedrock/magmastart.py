@@ -54,9 +54,8 @@ async def root():
 
 
 # ########  EVENT HANDLERS  ########
-# (Deprecated. Useful in special cases.)
 
-@app.on_event("startup")
+@app.on_event("startup")  # Deprecated but still useful
 async def on_startup():
     log.debug(f"🚧🚧  Running: DB CREATE_ALL (via 🚀 startup 🚀 event)  🚧🚧")
     async with async_engine.begin() as conn:

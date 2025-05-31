@@ -61,6 +61,5 @@ class UserRead(UserBase):
     id: int
 
     class Config:
-        # orm_mode = True  # Renamed to from_attributes - below:
         from_attributes = True
 
