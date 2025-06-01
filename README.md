@@ -8,17 +8,19 @@
 
 ---------------------------------------------------------------------------
 
-#### ✅ GIS support in the DB and in GIS Magma modules for geospatial apps
-
 #### ✅ Fastest FastAPI Possible (the only fully asynchronous Python stack)
 
-#### ✅ Best-practice Python design patterns featuring Dependency Injection
+#### ✅🌐 GIS support in the DB and in GIS Magma modules for geospatial apps
+
+#### ✅🌐 GeoAlchemy2 GIS ORM libraries included
+
+#### ✅🌐 Latest PostgreSQL 17.5 RDBMS with PostGIS Extensions
+
+#### ✅🌐 Jupyter Notebook Server, pre-configured, with GIS starter notebooks
 
 #### ✅ Clean FastAPI architecture: models, schemas, routers, services, core
 
-#### ✅ GeoAlchemy2 GIS ORM libraries included
-
-#### ✅ Latest PostgreSQL 17.5 RDBMS with PostGIS Extensions
+#### ✅ Best-practice Python design patterns featuring Dependency Injection
 
 #### ✅ pgAdmin 8.14 Professional Database Adminstration IDE (pre-configured)
 

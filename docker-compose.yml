@@ -96,3 +96,33 @@ services:
       "0.0.0.0:8000",
     ]
 
+
+  # ---- NOTEBOOK ----    [DEV]
+  bedrock-notebook:
+    container_name: bedrock-notebook
+    build: ./notebook
+    image: bedrock-notebook
+#    image: ${AWS_USER_ID_NUMBER}.dkr.ecr.us-west-2.amazonaws.com/${AWS_REPO_NAME}:bedrock-notebook
+#    image: 555555555555.dkr.ecr.us-west-2.amazonaws.com/your-aws-repo-name:bedrock-notebook
+    depends_on:
+      - bedrock-postgres
+      - bedrock-bedrock
+    restart: unless-stopped
+    networks:
+      - bedrock-network
+    ports:  # Not for production use:
+      - "48888:8888"
+    volumes:
+      - ./notebook:/home/bedrock/workspace
+    environment:
+      - "MAPBOX_TOKEN=998877665544332211"
+      # TODO: Clatify/comment BASE_URL. Needs a much better name.
+      - "BASE_URL=http://localhost:48000"
+#      - "JUPYTER_TOKEN="  # This did not work but the startup options below did work.
+#      - "JUPYTER_PASSWORD="  # This did not work but the startup options below did work.
+    command: [
+      "start-notebook.sh",
+      "--NotebookApp.token=''",
+      "--NotebookApp.password=''",
+    ]
+
