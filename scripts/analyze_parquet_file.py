@@ -1,6 +1,7 @@
 import pandas as pd
 import dotenv
 import os
+import time
 
 # The panda install does not bring in pyarrow and we do not import it here either. The pyarrow module is imported
 # internally by pandas via the following pd.read_parquet() call which specifies the pyarrow engine.
@@ -25,18 +26,18 @@ SEED_DATA_FILE_DIR = '../datavolume/'
 # PARQUET_FILE__LINKS: str = os.getenv('PARQUET_FILE__LINKS', default='DEFAULT--link_info.parquet.gz')
 PARQUET_FILE__LINKS: str = os.getenv('PARQUET_FILE__LINKS')
 if PARQUET_FILE__LINKS:
-    print(f"✅ PARQUET_FILE__LINKS: {PARQUET_FILE__LINKS}")
+    print(f"✅ PARQUET_FILE__LINKS: {PARQUET_FILE__LINKS}", flush=True)
 else:
-    print('🟥 ERROR: MISSING ENV VAR:  PARQUET_FILE__LINKS')
+    print('🟥 ERROR: MISSING ENV VAR:  PARQUET_FILE__LINKS', flush=True)
     exit(1)
 
 # Speed Data
 # PARQUET_FILE__SPEED_RECORDS: str = os.getenv('PARQUET_FILE__SPEED_RECORDS', default='DEFAULT--duval_jan1_2024.parquet.gz')
 PARQUET_FILE__SPEED_RECORDS: str = os.getenv('PARQUET_FILE__SPEED_RECORDS')
 if PARQUET_FILE__SPEED_RECORDS:
-    print(f"✅ PARQUET_FILE__SPEED_RECORDS: {PARQUET_FILE__SPEED_RECORDS}")
+    print(f"✅ PARQUET_FILE__SPEED_RECORDS: {PARQUET_FILE__SPEED_RECORDS}", flush=True)
 else:
-    print('🟥 ERROR: MISSING ENV VAR:  PARQUET_FILE__SPEED_RECORDS')
+    print('🟥 ERROR: MISSING ENV VAR:  PARQUET_FILE__SPEED_RECORDS', flush=True)
     exit(1)
 
 parquet_file_path__links = os.path.join(SEED_DATA_FILE_DIR, PARQUET_FILE__LINKS)
@@ -47,26 +48,48 @@ df_speed_record = pd.read_parquet(parquet_file_path__speed_records, engine='pyar
 
 
 def summarize(df):
-    print('- - - - SHAPE ---- df.shape - - - - - - - - - - - - - - - - - - - - - - -')
-    print('- - - - DTYPES ---- df.dtypes - - - - - - - - - - - - - - - - - - - - - - -')
-    print('- - - - HEAD(20) ---- df.head(20) - - - - - - - - - - - - - - - - - - - - - - -')
-    print('- - - - INFO() ---- df.info() - - - - - - - - - - - - - - - - - - - - - - -')
-    print('- - - - DESCRIBE() ---- df.describe() - - - - - - - - - - - - - - - - - - - - - - -')
+    print()
+    print('- - - - SHAPE ---- df.shape - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
+    print(f'SHAPE: {df.shape}')
+    print()
+    print('- - - - DTYPES ---- df.dtypes - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
+    print(f'SHAPE: {df.dtypes}')
+    print()
+    print('- - - - HEAD(20) ---- df.head(20) - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
+    print(f'SHAPE: {df.head(20)}')
+    print()
+    print('- - - - INFO() ---- df.info() - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
+    print(f'SHAPE: {df.info()}')
+    print()
+    print('- - - - DESCRIBE() ---- df.describe() - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
+    print(f'SHAPE: {df.describe()}')
 
 
 def summarize_geo_json_column(df):
-    print('- - - - HEAD 20 GEO_JSON COL ---- df.['geo_json'] - - - - - - - - - - - - - - - - - - -')
+    print("- - - - HEAD 20 GEO_JSON COL ---- df.['geo_json'] - - - - - - - - - - - - - - - - - - -", flush=True)
     for _ in range(20):
-        print('- - - - - - - -')
-        print(df['geo_json'])
+        print('- - - - - - - -', flush=True)
+        print(df['geo_json'], flush=True)
 
 
+def main():
+    # Pandas does this work asynchronously so the output can get jumbled without moving the slower one last
+    # and adding the sleep. This is not critical code so such crude measures are fine to address this async case.
 
-print('========  ANALYSIS OF PARQUET FILE:  LINKS  ================================')
-summarize(df_link)
-summarize_geo_json_column(df_link)
+    print(flush=True)
+    print('========  ANALYSIS OF PARQUET FILE:  SPEED_RECORDS  ================================', flush=True)
+    summarize(df_speed_record)
+    print(flush=True)
+
+    time.sleep(2)
+
+    print(flush=True)
+    print('========  ANALYSIS OF PARQUET FILE:  LINKS  ================================', flush=True)
+    summarize(df_link)
+    summarize_geo_json_column(df_link)
+    print(flush=True)
 
 
-print('========  ANALYSIS OF PARQUET FILE:  SPEED_RECORDS  ================================')
-summarize(df_speed_record)
+if __name__ == '__main__':
+    main()
 
