@@ -10,6 +10,8 @@ asyncio
 sqlalchemy
 geoalchemy2
 
+geojson-pydantic
+
 requests
 pydantic
 gunicorn

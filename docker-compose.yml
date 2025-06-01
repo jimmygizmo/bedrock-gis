@@ -115,6 +115,7 @@ services:
     volumes:
       - ./notebook:/home/bedrock/workspace
     environment:
+      - "JUPYTERLAB_SETTINGS_DIR=/home/bedrock/workspace"
       - "MAPBOX_TOKEN=998877665544332211"
       # TODO: Clatify/comment BASE_URL. Needs a much better name.
       - "BASE_URL=http://localhost:48000"
