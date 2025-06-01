@@ -3,7 +3,7 @@
 # Bedrock-GIS
 #
 
-# The build dir seems to appear from local pip installs like the "pip install ." to install Magma.
+# The build dir comes from local pip installs like the "pip install ." to install Magma for local development.
 # An egg info dir is also created but that is already covered in this .gitignore.
 build/
 
@@ -11,11 +11,12 @@ build/
 
 # datavolume and dbvolume
 # Git will not add anything inside this directory except the .gitkeep file which allows git to store an empty dir.
-# UPDATE: Added the inner ex-assets dir in the same way. I want this kept here in the repo but EMPTY, only with the .gitkeep.
+# UPDATE: Added the inner subdir-example dir in the same way.
+# Also with the subdir-example, I want this kept here in the repo but EMPTY, containing only the .gitkeep.
 datavolume/*
 !datavolume/.gitkeep
-datavolume/ex-assets/*
-!datavolume/ex-assets/.gitkeep
+datavolume/subdir-example/*
+!datavolume/subdir-example/.gitkeep
 
 dbvolume/*
 !dbvolume/.gitkeep
@@ -23,6 +24,7 @@ logvolume/*
 !logvolume/.gitkeep
 # TODO: I will be expanding logging, so I will want some subdirs to divide logs by their service.
 
+# Some of the following are for integrating React/Node frontend apps; coming soon to Bedrock and Bedrock-GIS.
 
 # To keep binaries out of the repo, I moved stuff in this express/assets dir into a subdir in datavolume.
 # So this dir is now empty, but I want to keep it in the repo, so I add the .gitkeep. TODO: Probably want to keep this
@@ -38,44 +40,35 @@ nginx/www/*
 
 
 # /nginx/nodesrc the destination of the React build output copied by prep script.
-# Builds at start of NGINX Dockerfile. ** Now there are two apps, two dirs: aidb, smartmetal
-# SMARTMETAL
-nginx/nodesrc-smartmetal/*
-!nginx/nodesrc-smartmetal/.gitkeep
-# AIDB
-nginx/nodesrc-aidb/*
-!nginx/nodesrc-aidb/.gitkeep
-# AUTODASH
-nginx/nodesrc-autodash/*
-!nginx/nodesrc-autodash/.gitkeep
+# Builds at start of NGINX Dockerfile. ** Now there are two apps, two dirs: example-app1, example-app2
+# example-app1
+nginx/nodesrc-example-app1/*
+!nginx/nodesrc-example-app1/.gitkeep
+# example-app2
+nginx/nodesrc-example-app2/*
+!nginx/nodesrc-example-app2/.gitkeep
+# example-app3
+nginx/nodesrc-example-app3/*
+!nginx/nodesrc-example-app3/.gitkeep
 
 
 # SSL:/TLS Certificates and Other Secrets
 secrets/*
 !secrets/about-secrets.txt
 
+
 # SSL:/TLS Certificates - Build location
 nginx/certs/*
 !nginx/certs/about-nginx-certs.txt
 
-# TODO: This would be good to put in place with just (time > version.txt) at minimum. BUT, SmartMetal needs the Intranet
-# under /ll1l1l1ll/ added as this is only in BotFolk at the moment. What does ** do again? Inside ANY directory?
-# I guess that works sort of, but I would rather be specific.
-#
-# Build version file created at build+deploy time by auto script
-**/ll1l1l1ll/version.txt
 
-# Idea for an env template. Not yet implemented.
-_env-template
 
 # PyCharm, WebStorm, IntelliJ IDEs
 .idea/
 
 # Pyenv - I do keep .python-version in the repo and use standardized v.e. names.
 
-#
-# BotFolk.ai
-#
+# A few more entries for React/Node for when front-end apps ceom to Bedrock stacks, soon.
 
 # /node/
 node/*

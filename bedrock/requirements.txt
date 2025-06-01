@@ -1,25 +1,44 @@
 # To match versions exactly and guarantee proper, test-validated operation, install modules
 # using requirements-pinned.txt. This requirements.txt is only for when you want all the latest versions.
 
+
 # TODO: Some of these individual items come in with fastapi[all] so this list will be cleaned up, commented a little.
 
+
 fastapi[all]
-asyncpg
-python-dotenv
+
+# TEST ELIMINATION - pydantic
+pydantic
+
+# TEST ELIMINATION - asyncio
 asyncio
+
+# asyncpg - The asynchronous PostgreSQL driver
+asyncpg
+
+# python-dotenv - Environment variable loading via .env files in the hierarchy
+python-dotenv
+
 sqlalchemy
 geoalchemy2
 
+
+# geojson-pydantic - For LineString data type for typing and Pydantic validation in schemas
 geojson-pydantic
 
+# pyarrow - For parsing the Parquet columnar compressed file format
+pyarrow
+
+
 requests
-pydantic
 gunicorn
 uvicorn
 pytest
 
+
 # passlib, for using bcrypt for password hashing
 passlib
+
 
 # TODO: pydantic almost certainly come in with fastapi[all]. Do we need requests or asyncio here?
 #  Are we using requests? and asyncio probably comes in with fastapi[all].

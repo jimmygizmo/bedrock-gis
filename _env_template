@@ -1,4 +1,4 @@
-# .env - Bedrock
+# .env - Bedrock-GIS
 # Location: <PROJECT-ROOT>
 # Environment: all
 # Project-level secrets. Nothing environment-specific.
@@ -6,6 +6,10 @@
 # NOTE: Other related locations of similar files or possible copies of this file:
 # /vol-env/.env
 # /anyreactproject/process.env    (not currently in use as of April 2025)
+
+# ---- GIS FEATURES ----
+PARQUET_FILE__LINKS="links_linestring__gis_data.parquet.gz"
+PARQUET_FILE__SPEED_RECORDS="speed_records__gis_data.parquet.gz"
 
 
 # React default non-javascript index.html references this VAR to construct the favicon.ico URL.
