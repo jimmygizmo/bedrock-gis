@@ -42,7 +42,8 @@ PGADMIN_DEFAULT_PASSWORD="bedrock"
 
 
 # ---- FASTAPI ----
-# None at the moment
+FASTAPI_LOG_LEVEL="DEBUG"
+STACK_ENV="DEVELOPMENT"
 
 
 # This file is used by python-dotenv and can be used by a Javascript ecosystem and other facilities as well.

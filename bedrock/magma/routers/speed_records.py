@@ -16,15 +16,15 @@ router = APIRouter(
 
 
 @router.post("/", response_model=SpeedRecordRead, status_code=201)
-def create_new_speed_record(session: AsyncSessionDep, record_in: SpeedRecordCreate):
+async def create_new_speed_record(session: AsyncSessionDep, record_in: SpeedRecordCreate):
     log.info(f"🧊  ----> /speed-records/    POST NEW")
-    return create_speed_record(session, record_in)
+    return await create_speed_record(session, record_in)
 
 
 @router.get("/{record_id}", response_model=SpeedRecordRead)
-def read_speed_record(session: AsyncSessionDep, record_id: int):
+async def read_speed_record(session: AsyncSessionDep, record_id: int):
     log.info(f"🧊  ----> /speed-records/{record_id}")
-    record = get_speed_record(session, record_id)
+    record = await get_speed_record(session, record_id)
     if not record:
         raise HTTPException(status_code=404, detail="SpeedRecord not found")
     return record
@@ -37,7 +37,7 @@ async def read_speed_records(session: AsyncSessionDep, skip: int = 0, limit: int
 
 
 @router.get("/link/{link_id}", response_model=list[SpeedRecordRead])
-def read_speed_records_by_link(session: AsyncSessionDep, link_id: int):
+async def read_speed_records_by_link(session: AsyncSessionDep, link_id: int):
     log.info(f"🧊  ----> /speed-records/link/{link_id}")
-    return get_speed_records_by_link(session, link_id)
+    return await get_speed_records_by_link(session, link_id)
 

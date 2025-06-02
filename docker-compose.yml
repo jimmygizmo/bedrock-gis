@@ -17,6 +17,7 @@ services:
   # ---- POSTGRES ----    [DEV]
   bedrock-postgres:
     container_name: bedrock-postgres
+    platform: linux/amd64
     build: ./postgres
     image: bedrock-postgres
 #    image: ${AWS_USER_ID_NUMBER}.dkr.ecr.us-west-2.amazonaws.com/${AWS_REPO_NAME}:bedrock-postgres
@@ -126,4 +127,10 @@ services:
       "--NotebookApp.token=''",
       "--NotebookApp.password=''",
     ]
+
+
+# Moving from Docker builds on WSL to macOS required adding the "platform: linux/amd64" added to postgres.
+# Changes in Docker in the last year or so are related to this. Buildx involves related issues to nail down.
+# saw the issue when deploying from mac to AWS and when moving from WSL to mac. Now we have to pay more attention
+# to the platform of the built images
 

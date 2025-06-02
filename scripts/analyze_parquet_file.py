@@ -6,6 +6,9 @@ import time
 # The panda install does not bring in pyarrow and we do not import it here either. The pyarrow module is imported
 # internally by pandas via the following pd.read_parquet() call which specifies the pyarrow engine.
 
+pd.set_option('display.max_columns', None)  # Show all columns
+
+
 # Locate any .env file in the hierarchy here or above here and load it
 dotenv.load_dotenv(dotenv.find_dotenv())
 

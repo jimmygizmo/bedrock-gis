@@ -1,23 +1,22 @@
 from fastapi import APIRouter, HTTPException
 from magma.core.logger import log
 from magma.core.dependencies import AsyncSessionDep
+from geoalchemy2.shape import to_shape
+from magma.services.link import create_link, get_link, get_links
+from magma.schemas.link import LineStringGeometryCreate, LineStringGeometryRead
 
 
 # ########    FastAPI ROUTER:  links    ########
 
-
-from geoalchemy2.shape import to_shape
-from magma.services.link import create_link, get_link, get_links
-from magma.schemas.link import LineStringGeometryCreate, LinkStringGeometryRead
 
 router = APIRouter(
     prefix="/links",
     tags=["Links"]
 )
 
-@router.post("/", response_model=LinkStringGeometryRead)
-def create_link_endpoint(session: AsyncSessionDep, link_data: LineStringGeometryCreate):
-    link = create_link(session, link_data)
+@router.post("/", response_model=LineStringGeometryRead)
+async def create_link_endpoint(session: AsyncSessionDep, link_data: LineStringGeometryCreate):
+    link = await create_link(session, link_data)
     # Convert WKB to GeoJSON-like dict
     geom = to_shape(link.geom)
     return {
@@ -27,9 +26,9 @@ def create_link_endpoint(session: AsyncSessionDep, link_data: LineStringGeometry
     }
 
 
-@router.get("/{link_id}", response_model=LinkStringGeometryRead)
-def get_link_endpoint(session: AsyncSessionDep, link_id: int):
-    link = get_link(session, link_id)
+@router.get("/{link_id}", response_model=LineStringGeometryRead)
+async def get_link_endpoint(session: AsyncSessionDep, link_id: int):
+    link = await get_link(session, link_id)
     if not link:
         raise HTTPException(status_code=404, detail="Link not found")
     geom = to_shape(link.geom)
@@ -40,9 +39,9 @@ def get_link_endpoint(session: AsyncSessionDep, link_id: int):
     }
 
 
-@router.get("/", response_model=list[LinkStringGeometryRead])
-def get_all_links_endpoint(session: AsyncSessionDep):
-    links = get_links(session)
+@router.get("/", response_model=list[LineStringGeometryRead])
+async def get_all_links_endpoint(session: AsyncSessionDep):
+    links = await get_links(session)
     return [
         {
             "id": link.id,

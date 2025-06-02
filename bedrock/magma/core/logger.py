@@ -1,8 +1,12 @@
 import logging
 import os
+import dotenv
 
 
 # ########    LOGGING INITIALIZATION    ########
+
+
+dotenv.load_dotenv(dotenv.find_dotenv())
 
 fastapi_log_level: str = os.getenv("FASTAPI_LOG_LEVEL", "🟥 ERROR: MISSING ENV VAR: FASTAPI_LOG_LEVEL").upper()
 print(f"✅ INITIALIZING FASTAPI LOGGING: fastapi_log_level from ENV: {fastapi_log_level}")

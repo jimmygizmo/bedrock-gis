@@ -4,14 +4,17 @@
 
 # TODO: Some of these individual items come in with fastapi[all] so this list will be cleaned up, commented a little.
 
-
 fastapi[all]
 
-# TEST ELIMINATION - pydantic
-pydantic
+# TEST ELIMINATION - pydantic - SUCCESS (already coming in via some parent)
+#pydantic
 
-# TEST ELIMINATION - asyncio
-asyncio
+# TEST ELIMINATION - asyncio - SUCCESS (already coming in via some parent)
+#asyncio
+
+# TEST ELIMINATION - sqlalchemy - SUCCESS (already coming in via some parent)
+#sqlalchemy
+
 
 # asyncpg - The asynchronous PostgreSQL driver
 asyncpg
@@ -19,17 +22,23 @@ asyncpg
 # python-dotenv - Environment variable loading via .env files in the hierarchy
 python-dotenv
 
-sqlalchemy
+# geoalchemy2 - TODO: Describe
 geoalchemy2
-
 
 # geojson-pydantic - For LineString data type for typing and Pydantic validation in schemas
 geojson-pydantic
 
-# pyarrow - For parsing the Parquet columnar compressed file format
+# TODO: For shapely and others, write good descriptions.
+shapely
+
+# pandas, pyarrow - For parsing the Parquet columnar compressed file format
+pandas
 pyarrow
 
+# geopandas - For Seeder parsing of input data
+geopandas
 
+# Possibly only a notebook will use requests.
 requests
 gunicorn
 uvicorn
