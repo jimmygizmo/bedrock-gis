@@ -4,7 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import magma.core.config as cfg
 from magma.core.logger import log
-from magma.routers import users, links, speed_records
+from magma.routers import users
+# from magma.routers import users, links, speed_records
 from magma.models import *  # To ensure a proper create_all()
 from magma.core.database import async_engine, Base
 
@@ -45,8 +46,9 @@ app.add_middleware(
 # ########  ROUTERS  ########
 
 app.include_router(users.router)  # Users
-app.include_router(links.router)  # Links
-app.include_router(speed_records.router)  # Speed Records
+# TODO: These wont necessarily get new routers. This data is imported and other endpoints present views of it.
+# app.include_router(links.router)  # Links
+# app.include_router(speed_records.router)  # Speed Records
 
 
 # ########  ROOT API HANDLERS  ########
