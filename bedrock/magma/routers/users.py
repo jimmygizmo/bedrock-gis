@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from magma.core.logger import log
+from magma.core.dependencies import AsyncSessionDep
 from magma.schemas.user import UserCreate, UserRead
 from magma.services.user import create_user, get_user, get_users
-from magma.core.dependencies import AsyncSessionDep
 
 
 # ########    FastAPI ROUTER:  users    ########

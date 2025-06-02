@@ -22,7 +22,7 @@ class LineStringGeometryCreate(LineStringGeometryBase):
     model_config = ConfigDict(extra="forbid", validate_by_name=True, validate_by_alias=True)
 
 # -------- Used for response serialization (example: API GET /links/1) --------
-class LinkStringGeometryRead(LineStringGeometryBase):
+class LineStringGeometryRead(LineStringGeometryBase):
     id: int
 
     class Config:

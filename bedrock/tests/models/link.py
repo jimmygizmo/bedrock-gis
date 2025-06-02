@@ -1,6 +1,6 @@
 from geoalchemy2.shape import from_shape
 from shapely.geometry import LineString
-from magma.models import Link
+from magma.models.link import Link
 from magma.core.dependencies import AsyncSessionDep
 
 def create_sample_link(session: AsyncSessionDep):

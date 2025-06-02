@@ -1,7 +1,7 @@
 from sqlalchemy import select
+from magma.core.dependencies import AsyncSessionDep
 from magma.models.user import User
 from magma.schemas.user import UserCreate
-from magma.core.dependencies import AsyncSessionDep
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 

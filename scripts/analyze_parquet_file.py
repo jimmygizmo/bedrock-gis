@@ -46,23 +46,24 @@ df_link = pd.read_parquet(parquet_file_path__links, engine='pyarrow')
 parquet_file_path__speed_records = os.path.join(SEED_DATA_FILE_DIR, PARQUET_FILE__SPEED_RECORDS)
 df_speed_record = pd.read_parquet(parquet_file_path__speed_records, engine='pyarrow')
 
+# Why all the flush=True? Pandas has many simultaneous async processes here. flush=True helps keep output in order.
 
 def summarize(df):
-    print()
+    print(flush=True)
     print('- - - - SHAPE ---- df.shape - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
-    print(f'SHAPE: {df.shape}')
-    print()
+    print(f'SHAPE: {df.shape}', flush=True)
+    print(flush=True)
     print('- - - - DTYPES ---- df.dtypes - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
-    print(f'SHAPE: {df.dtypes}')
-    print()
+    print(f'SHAPE: {df.dtypes}', flush=True)
+    print(flush=True)
     print('- - - - HEAD(20) ---- df.head(20) - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
-    print(f'SHAPE: {df.head(20)}')
-    print()
+    print(f'SHAPE: {df.head(20)}', flush=True)
+    print(flush=True)
     print('- - - - INFO() ---- df.info() - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
-    print(f'SHAPE: {df.info()}')
-    print()
+    print(f'SHAPE: {df.info()}', flush=True)
+    print(flush=True)
     print('- - - - DESCRIBE() ---- df.describe() - - - - - - - - - - - - - - - - - - - - - - -', flush=True)
-    print(f'SHAPE: {df.describe()}')
+    print(f'SHAPE: {df.describe()}', flush=True)
 
 
 def summarize_geo_json_column(df):
@@ -75,6 +76,7 @@ def summarize_geo_json_column(df):
 def main():
     # Pandas does this work asynchronously so the output can get jumbled without moving the slower one last
     # and adding the sleep. This is not critical code so such crude measures are fine to address this async case.
+    # To help keep output in order in such an asynchronous case, we add the flush=True to all print() calls.
 
     print(flush=True)
     print('========  ANALYSIS OF PARQUET FILE:  SPEED_RECORDS  ================================', flush=True)
