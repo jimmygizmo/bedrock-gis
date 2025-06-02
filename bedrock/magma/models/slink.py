@@ -10,8 +10,8 @@ from magma.core.database import Base
 class Slink(Base):
     __tablename__ = "slinks"
 
-    id = Column("slink_id", Integer, primary_key=True, index=True)  # ? __name_pos ?
-    # id = Column(Integer, primary_key=True, index=True)
+    # id = Column("link_id", Integer, primary_key=True, index=True)  # __name_pos will cutomize the col name
+    id = Column(Integer, primary_key=True, index=True)
 
     _length = Column(Float)  # Converted from object to float
     road_name = Column(String)
@@ -24,9 +24,12 @@ class Slink(Base):
     volumes_bin_description = Column(String)
 
     # For this LineString gemoetry, srid=4326 specifies GPS lattitude/longitude (lat/lon) format
-    geometry = Column(Geometry("LineString", srid=4326), nullable=False)
+    geometry = Column(Geometry("MultiLineString", srid=4326), nullable=False)
 
-    speed_records = relationship("SspeedRecord", back_populates="slink")
+    # Note the back_populates="slink" is singular and this is intentional to match the LINK declared in SspeedRecord
+    # One might assume this was meant to refer to the table name and this be plural but I AM NEARLY POSITIVE THATS WRONG.
+    # TODO: Test this. We will know when we get this all working.
+    sspeed_records = relationship("SspeedRecord", back_populates="slink")
 
 
 ###################################

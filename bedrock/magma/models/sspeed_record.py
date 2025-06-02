@@ -13,7 +13,7 @@ class SspeedRecord(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     slink_id = Column(Integer, ForeignKey("slinks.id"), index=True, nullable=False)
 
-    date_time = Column(DateTime, nullable=False)
+    date_time = Column(DateTime(timezone=True), nullable=False)
     freeflow = Column(Float)
     count = Column(Integer)
     std_dev = Column(Float)
@@ -27,7 +27,7 @@ class SspeedRecord(Base):
     day_of_week = Column(Integer)
     period = Column(Integer)
 
-    link = relationship("Slink", back_populates="sspeed_records")
+    slink = relationship("Slink", back_populates="sspeed_records")
 
 
 #####################################

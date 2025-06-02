@@ -10,6 +10,12 @@ volumes:
       type: none
       o: bind
       device: ./dbvolume
+#  datavolume:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      o: bind
+#      device: ./datavolume
 
 services:
 
@@ -118,7 +124,7 @@ services:
     environment:
       - "JUPYTERLAB_SETTINGS_DIR=/home/bedrock/workspace"
       - "MAPBOX_TOKEN=998877665544332211"
-      # TODO: Clatify/comment BASE_URL. Needs a much better name.
+      # TODO: Clarify/comment BASE_URL. Needs a much better name.
       - "BASE_URL=http://localhost:48000"
 #      - "JUPYTER_TOKEN="  # This did not work but the startup options below did work.
 #      - "JUPYTER_PASSWORD="  # This did not work but the startup options below did work.

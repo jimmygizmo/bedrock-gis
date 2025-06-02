@@ -9,9 +9,6 @@ fastapi[all]
 # TEST ELIMINATION - pydantic - SUCCESS (already coming in via some parent)
 #pydantic
 
-# TEST ELIMINATION - asyncio - SUCCESS (already coming in via some parent)
-#asyncio
-
 # TEST ELIMINATION - sqlalchemy - SUCCESS (already coming in via some parent)
 #sqlalchemy
 
@@ -30,6 +27,12 @@ geojson-pydantic
 
 # TODO: For shapely and others, write good descriptions.
 shapely
+
+# asyncio - Needed for asynchronous independent scripts like seed.py that need the DB.
+asyncio
+
+# greenlet - needed in some cases by SQLAlchemy when using run_sync and AsyncSessionLocal
+greenlet
 
 # pandas, pyarrow - For parsing the Parquet columnar compressed file format
 pandas
