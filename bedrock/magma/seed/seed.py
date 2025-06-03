@@ -1,48 +1,40 @@
-import pandas as pd
-import geopandas as gpd
 import json
-from shapely.geometry import shape
-from datetime import datetime
-
-# from magma.core.dependencies import AsyncSessionDep   # Not using this. Headache with env vars and more.
-# from magma.core.database import async_engine, AsyncSessionLocal, Base   # Not using this either. Similarly.
-
-# These must be imported for sqlalchemy.orm.declarative_base() to know about them and create them in create_all.
-from magma.models.slink import Slink
-from magma.models.sspeed_record import SspeedRecord
-from magma.core.database import Base
-
 import asyncio
-
+import pandas as pd
+from shapely.geometry import shape
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
+from magma.core.database import Base
+from magma.models.link import Link
+from magma.models.speed_record import SpeedRecord
 
-SEED_DATABASE_URL = 'postgresql+asyncpg://bedrock:bedrock@localhost:45432/bedrockdb'
 
+DATABASE_URL = 'postgresql+asyncpg://bedrock:bedrock@localhost:45432/bedrockdb'
 
-seed_async_engine = create_async_engine(SEED_DATABASE_URL)
+seed_async_engine = create_async_engine(DATABASE_URL)
 
-# Async session factory
+# This is the correct way to get our async DB session in a standalone script, as opposed to using core.dependencies
 AsyncSessionLocal = sessionmaker(
         bind=seed_async_engine,
         class_=AsyncSession,
         expire_on_commit=False,
     )
 
-# SeedBase = declarative_base()  # Pydantic Declarative Base - Reference DB schema used for database creation/changes
 
 async def async_db_create_all():
+    # This create_all is here to handle special cases. The full stack has a primary startup create_all.
     async with seed_async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
 
-async def load_slinks(session: AsyncSession, file_path: str):
+async def load_links(session: AsyncSession, file_path: str):
+    print(f"Loading links from {file_path}")
     df = pd.read_parquet(file_path)
 
     for _, row in df.iterrows():
         geometry_obj = shape(json.loads(row["geo_json"]))
-        link = Slink(
+        link = Link(
             id=row["link_id"],
             _length=float(row["_length"]) if row["_length"] else None,
             road_name=row["road_name"],
@@ -61,41 +53,18 @@ async def load_slinks(session: AsyncSession, file_path: str):
     print("✅ Links loaded.")
 
 
-async def load_sspeed_records(session: AsyncSession, file_path: str):
+async def load_speed_records(session: AsyncSession, file_path: str):
+    print(f"Loading speed_records from {file_path}")
     df = pd.read_parquet(file_path)
 
     # Effectively convert in place the string/object values to actual datetime type values of column date_time
-    # Observed UTC timezone in many rows so data is timezone aware.
+    # Observed UTC timezone in many rows so data is timezone aware and we keep timezone awareness throughout.
     df["date_time"] = pd.to_datetime(df["date_time"])
-
-    # REMOVE PK CONSTRAINT TEMPORARILY - WE MAY NOT NEED TO DO THIS WITH OUR NEW VALIDATION FILTERING
-    # await session.execute(text("""
-    #                            ALTER TABLE sspeed_records
-    #                            DROP
-    #                            CONSTRAINT fk_sspeed_slink
-    #                            """))
-    # await session.commit()
-
-    # Adding link_id validation so we load with referential integrity and maintain PK relationship.
-    # UPDATE: Visibility below shows we actually had no bad records. All speed_record link_ids have a valid relation.
-    # 1. Get all valid link_ids
-    result = await session.execute(
-        text("SELECT id FROM slinks")
-    )
-    valid_ids = set(r[0] for r in result.fetchall())  # Flatten to simple set
-
-    # 2. Filter dataframe
-    filtered_df = df[df["link_id"].isin(valid_ids)]
-    print(f"ℹ️ Importing {len(filtered_df)} of {len(df)} sspeed_records with valid slink_id...")
-
-    # 3. Visibility of bad records:
-    dropped_df = df[~df["link_id"].isin(valid_ids)]
-    dropped_df.to_parquet("dropped_records.parquet")
 
 
     records = [
-        SspeedRecord(
-            slink_id=row["link_id"],
+        SpeedRecord(
+            link_id=row["link_id"],
             date_time=row["date_time"],
             freeflow=row["freeflow"],
             count=row["count"],
@@ -110,69 +79,31 @@ async def load_sspeed_records(session: AsyncSession, file_path: str):
             period=row["period"],
         )
         # for _, row in df.iterrows()  # Original unfiltered full data source
-        for _, row in filtered_df.iterrows()
+        for _, row in df.iterrows()
     ]
-
-    # session.add_all(records)  # Disabled for experimental fix attempt below
 
     # ************ SPECIAL TIMEZONE ISSUE FIX ATTEMPT ************
     # Avoids bulk load ambiguities (bugs sort of) in negotiation of typs with respect to timezone required and others.
-    # filtered_df["date_time"] = pd.to_datetime(df["date_time"], utc=True)  # Already did this above
 
-    # We must make input data names match the model names when using an import method like to_dict:
-    filtered_df.rename(columns={"link_id": "slink_id"}, inplace=True)
+    records = df.to_dict(orient="records")
 
-    records = filtered_df.to_dict(orient="records")
-
-    # ROE BY ROW RATHER THAN THE BULK add_all(records)
-    for record in records:
-        obj = SspeedRecord(**record)
+    for record in records:  # Row by row rather than the bulk add_all(records)  (as it my have date/time type ambiguities)
+        obj = SpeedRecord(**record)
         session.add(obj)
     # ************************************************************
-    # If this does not work we will have to drop the timezone awareness which in this case if OK for now.
-    # In a final production system you cannot usually drop timezone awareness unless your system is designed for that.
 
     await session.commit()
     print("✅ SpeedRecords loaded.")
 
-    # ADD BACK PK CONSTRAINT:
-    # await session.execute(text("""
-    #                            ALTER TABLE sspeed_records
-    #                                ADD CONSTRAINT fk_sspeed_slink
-    #                                    FOREIGN KEY (slink_id) REFERENCES slinks (id)
-    #                            """))
-    # await session.commit()
-
 
 async def main():
-    # The correct Base (delaclarative_base) must be imported AND all needed models imported before a create_all is done.
-    await async_db_create_all()
-
-    # Check that the tables we need even exist. This requires the correct Base as well as all needed models imported
-    # before the create_all ran, and many other prerequisites, so this is a valuable check.
-    async with seed_async_engine.begin() as conn:
-        result = await conn.execute(text("SELECT tablename FROM pg_tables WHERE schemaname = 'public'"))
-        print('*** EXISTING TABLES:')
-        all_tables = result.fetchall()
-        print(all_tables)
-        print()
+    await async_db_create_all()  # This create_all is here to handle special cases. Stack has a startup create_all too.
 
     async with AsyncSessionLocal() as session:
-        await load_slinks(session, "../../../datavolume/link_info.parquet.gz")
-        await load_sspeed_records(session, "../../../datavolume/duval_jan1_2024.parquet.gz")
+        await load_links(session, "../../../datavolume/link_info.parquet.gz")
+        await load_speed_records(session, "../../../datavolume/duval_jan1_2024.parquet.gz")
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-
-# Not using the dependency in thie standalone script. Using AsyncSessionLocal which I just added to magma.core.database
-# if __name__ == "__main__":
-#     seed_session = AsyncSessionDep
-#     try:
-#         async_db_create_all()
-#         load_links(seed_session, "data/link_info.parquet.gz")
-#         load_speed_records(seed_session, "data/duval_jan1_2024.parquet.gz")
-#     finally:
-#         seed_session.close()
 

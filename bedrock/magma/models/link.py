@@ -4,13 +4,12 @@ from geoalchemy2 import Geometry
 from magma.core.database import Base
 
 
-# ########    SQLALCHEMY MODEL:  slink    ########
+# ########    SQLALCHEMY MODEL:  link    ########
 
 
-class Slink(Base):
-    __tablename__ = "slinks"
+class Link(Base):
+    __tablename__ = "links"
 
-    # id = Column("link_id", Integer, primary_key=True, index=True)  # __name_pos will cutomize the col name
     id = Column(Integer, primary_key=True, index=True)
 
     _length = Column(Float)  # Converted from object to float
@@ -23,13 +22,10 @@ class Slink(Base):
     volume_year = Column(Integer)
     volumes_bin_description = Column(String)
 
-    # For this LineString gemoetry, srid=4326 specifies GPS lattitude/longitude (lat/lon) format
+    # For this MultiLineString gemoetry, srid=4326 specifies GPS lattitude/longitude (lat/lon) format
     geometry = Column(Geometry("MultiLineString", srid=4326), nullable=False)
 
-    # Note the back_populates="slink" is singular and this is intentional to match the LINK declared in SspeedRecord
-    # One might assume this was meant to refer to the table name and this be plural but I AM NEARLY POSITIVE THATS WRONG.
-    # TODO: Test this. We will know when we get this all working.
-    sspeed_records = relationship("SspeedRecord", back_populates="slink")
+    speed_records = relationship("SpeedRecord", back_populates="link")
 
 
 ###################################

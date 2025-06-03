@@ -46,9 +46,6 @@ app.add_middleware(
 # ########  ROUTERS  ########
 
 app.include_router(users.router)  # Users
-# TODO: These wont necessarily get new routers. This data is imported and other endpoints present views of it.
-# app.include_router(links.router)  # Links
-# app.include_router(speed_records.router)  # Speed Records
 
 
 # ########  ROOT API HANDLERS  ########

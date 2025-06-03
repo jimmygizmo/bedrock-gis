@@ -3,13 +3,14 @@
 networks:
   bedrock-network:
 
-volumes:
-  dbvolume:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./dbvolume
+# TODO: Don't need this section for sure but if we use it, the device with ./ needs to be checked. Check entire format.
+#volumes:
+#  dbvolume:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      o: bind
+#      device: ./dbvolume
 #  datavolume:
 #    driver: local
 #    driver_opts:

@@ -3,6 +3,10 @@
 # Bedrock-GIS
 #
 
+# Side effect of validating input data for orphan child records in two-table relationship.
+dropped_records.parquet
+
+
 # The build dir comes from local pip installs like the "pip install ." to install Magma for local development.
 # An egg info dir is also created but that is already covered in this .gitignore.
 build/

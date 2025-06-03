@@ -1,17 +1,16 @@
-from sqlalchemy import Column, String, Integer, DateTime, Float, ForeignKey
+from sqlalchemy import Column, Integer, DateTime, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from magma.core.database import Base
-from datetime import datetime, timezone
 
 
 # ########    SQLALCHEMY MODEL:  speed_record    ########
 
 
-class SspeedRecord(Base):
-    __tablename__ = "sspeed_records"
+class SpeedRecord(Base):
+    __tablename__ = "speed_records"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    slink_id = Column(Integer, ForeignKey("slinks.id"), index=True, nullable=False)
+    link_id = Column(Integer, ForeignKey("links.id"), index=True, nullable=False)
 
     date_time = Column(DateTime(timezone=True), nullable=False)
     freeflow = Column(Float)
@@ -27,7 +26,7 @@ class SspeedRecord(Base):
     day_of_week = Column(Integer)
     period = Column(Integer)
 
-    slink = relationship("Slink", back_populates="sspeed_records")
+    link = relationship("Link", back_populates="speed_records")
 
 
 #####################################
