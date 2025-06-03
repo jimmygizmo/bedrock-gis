@@ -4,7 +4,6 @@ import pandas as pd
 from shapely.geometry import shape
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import text
 from magma.core.database import Base
 from magma.models.link import Link
 from magma.models.speed_record import SpeedRecord
@@ -57,8 +56,7 @@ async def load_speed_records(session: AsyncSession, file_path: str):
     print(f"Loading speed_records from {file_path}")
     df = pd.read_parquet(file_path)
 
-    # Effectively convert in place the string/object values to actual datetime type values of column date_time
-    # Observed UTC timezone in many rows so data is timezone aware and we keep timezone awareness throughout.
+    # Preserve timezone awareness (best practice): Convert string/object values to true datetime type for col date_time
     df["date_time"] = pd.to_datetime(df["date_time"])
 
 
@@ -78,16 +76,12 @@ async def load_speed_records(session: AsyncSession, file_path: str):
             day_of_week=row["day_of_week"],
             period=row["period"],
         )
-        # for _, row in df.iterrows()  # Original unfiltered full data source
         for _, row in df.iterrows()
     ]
 
-    # ************ SPECIAL TIMEZONE ISSUE FIX ATTEMPT ************
-    # Avoids bulk load ambiguities (bugs sort of) in negotiation of typs with respect to timezone required and others.
-
-    records = df.to_dict(orient="records")
-
-    for record in records:  # Row by row rather than the bulk add_all(records)  (as it my have date/time type ambiguities)
+    # Row-by-row is deliberate, to avoid datetime issues with bulk methods like add_all()
+    records = df.to_dict(orient="records")  # Becuase we use to_dict() our col names must match data file col names.
+    for record in records:
         obj = SpeedRecord(**record)
         session.add(obj)
     # ************************************************************
@@ -97,7 +91,7 @@ async def load_speed_records(session: AsyncSession, file_path: str):
 
 
 async def main():
-    await async_db_create_all()  # This create_all is here to handle special cases. Stack has a startup create_all too.
+    await async_db_create_all()
 
     async with AsyncSessionLocal() as session:
         await load_links(session, "../../../datavolume/link_info.parquet.gz")
